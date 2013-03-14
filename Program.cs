@@ -41,7 +41,7 @@ namespace GadgeteerRoborace
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
 
-            GT.Timer timer = new GT.Timer(50); // every second (1000ms)
+            GT.Timer timer = new GT.Timer(50); // every second (50ms)
             timer.Tick += new GT.Timer.TickEventHandler(timer_Tick);
             timer.Start();
         }
@@ -91,19 +91,19 @@ namespace GadgeteerRoborace
 
             if (distF > frontTreshold)
             {
-                if (distR < rightTreshold || restore-- > 0)
-                {
-                    if (SetState(State.Left))       // away from the wall
-                    {
-                        Turn(GoLeft);
-                        SetSpeed(GoSlow);
-                    }
-                }
-                else if (distR > rightTreshold + 0.2)
+                if (distR > rightTreshold + 0.2 || restore-- > 0)
                 {
                     if (SetState(State.Right))      // towards the wall
                     {
                         Turn(GoRight);
+                        SetSpeed(GoSlow);
+                    }
+                }
+                else if (distR < rightTreshold)
+                {
+                    if (SetState(State.Left))       // away from the wall
+                    {
+                        Turn(GoLeft);
                         SetSpeed(GoSlow);
                     }
                 }
